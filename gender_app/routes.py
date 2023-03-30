@@ -22,17 +22,13 @@ Gender_schema = GenderPay(many=True)
 
 
 def get_median_by_field(query_result, field_name):
-    # 获取所有符合条件的字段值
     field_values = [getattr(item, field_name) for item in query_result]
-    # 计算中位数
     return median(field_values)
 
 
 def get_Average(field_type, value):
-    # 使用select语句和func对象计算平均值和中位数
     from sqlalchemy import func
 
-    # 根据 Region 和 Industry 和 EmployerSize 字段值为条件，查询各列的平均值
     max_avg = Gender_pay.query.filter_by(**{field_type: value}).with_entities(
         func.avg(Gender_pay.DiffMeanHourlyPercent),
         func.avg(Gender_pay.DiffMedianHourlyPercent),
@@ -139,19 +135,17 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # 获取请求中的数据
         username = request.form.get('username')
         password = hash_code(request.form.get('password'))
 
-        # 连接数据库，判断用户名+密码组合是否匹配
+        # Check if username and password match
         conn = sqlite3.connect('data/gender.db')
         cur = conn.cursor()
         try:
-            # sqlite3支持?占位符，通过绑定变量的查询方式杜绝sql注入
+
             sql = 'SELECT 1 FROM USER WHERE USERNAME=? AND PASSWORD=?'
             is_valid_user = cur.execute(sql, (username, password)).fetchone()
 
-            # 拼接方式，存在sql注入风险, SQL注入语句：在用户名位置填入 1 or 1=1 --
             # sql = 'SELECT 1 FROM USER WHERE USERNAME=%s AND PASSWORD=%s' % (username, password)
             # print(sql)
             # is_valid_user = cur.execute(sql).fetchone()
@@ -162,7 +156,7 @@ def login():
             conn.close()
 
         if is_valid_user:
-            # 登录成功后存储session信息
+            # Successfully Log in
             session['is_login'] = True
             session['name'] = username
             return redirect('/')
@@ -178,26 +172,26 @@ def register():
         username = request.form.get('username', '').strip()
         password = request.form.get('password')
         confirm_password = request.form.get('confirm')
-        # 判断所有输入都不为空
+        # Identify any mistake
         if username and password and confirm_password:
             if password != confirm_password:
                 flash('Unmatched！')
                 return render_template('register.html', username=username)
-            # 连接数据库
+            # Build database
             conn = sqlite3.connect('data/gender.db')
             cur = conn.cursor()
-            # 查询输入的用户名是否已经存在
+            # Check if the username already exists
             sql_same_user = 'SELECT 1 FROM USER WHERE USERNAME=?'
             same_user = cur.execute(sql_same_user, (username,)).fetchone()
             if same_user:
                 flash('Username Exists！')
                 return render_template('register.html', username=username)
-            # 通过检查的数据，插入数据库表中
+            # Save data into the database
             sql_insert_user = 'INSERT INTO USER(USERNAME, PASSWORD) VALUES (?,?)'
             cur.execute(sql_insert_user, (username, hash_code(password)))
             conn.commit()
             conn.close()
-            # 重定向到登录页面
+            # Redirect to login
             return redirect('/login')
         else:
             flash('All fields are required！')
@@ -209,7 +203,6 @@ def register():
 
 @app.route('/logout')
 def logout():
-    # 退出登录，清空session
     if session.get('is_login'):
         session.clear()
         return redirect('/')
