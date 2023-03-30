@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+{% set title = 'Gender pay gap service Home' %}
+{% block content %}
+    <div class="container-fluid">
+    <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>DiffMeanHourlyPercent</th>
+                    <th>DiffMedianHourlyPercent</th>
+                    <th>DiffMeanBonusPercent</th>
+                    <th>DiffMedianBonusPercent</th>
+                    <th>MaleBonusPercent</th>
+                    <th>FemaleBonusPercent</th>
+                    <th>MaleLowerQuartile</th>
+                    <th>FemaleLowerQuartile</th>
+                    <th>MaleLowerMiddleQuartile</th>
+                    <th>FemaleLowerMiddleQuartile</th>
+                    <th>MaleUpperMiddleQuartile</th>
+                    <th>FemaleUpperMiddleQuartile</th>
+                    <th>MaleTopQuartile</th>
+                    <th>FemaleTopQuartile</th>
+                    <th>EmployerSize</th>
+                    <th>Region</th>
+                    <th>Industry</th>
+                    <th>EmployerSizeMedian</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for row in data %}
+                    <tr>
+                    <td>{{ row.DiffMeanHourlyPercent }}</td>
+                    <td>{{ row.DiffMedianHourlyPercent }}</td>
+                    <td>{{ row.DiffMeanBonusPercent }}</td>
+                    <td>{{ row.DiffMedianBonusPercent }}</td>
+                    <td>{{ row.MaleBonusPercent }}</td>
+                    <td>{{ row.FemaleBonusPercent }}</td>
+                    <td>{{ row.MaleLowerQuartile }}</td>
+                    <td>{{ row.FemaleLowerQuartile }}</td>
+                    <td>{{ row.MaleLowerMiddleQuartile }}</td>
+                    <td>{{ row.FemaleLowerMiddleQuartile }}</td>
+                    <td>{{ row.MaleUpperMiddleQuartile }}</td>
+                    <td>{{ row.FemaleUpperMiddleQuartile }}</td>
+                    <td>{{ row.MaleTopQuartile }}</td>
+                    <td>{{ row.FemaleTopQuartile }}</td>
+                    <td>{{ row.EmployerSize }}</td>
+                    <td>{{ row.Region }}</td>
+                    <td>{{ row.Industry }}</td>
+                    <td>{{ row.EmployerSizeMedian }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+</table>
+     <div class="text-center">
+        {% if data.has_prev %}
+            <a href="{{ url_for('display_alldata', page=data.prev_num) }}" class="btn btn-default">Previous</a>
+        {% endif %}
+        <span class="text-muted">Page {{ data.page }} of {{ data.pages }}</span>
+        {% if data.has_next %}
+            <a href="{{ url_for('display_alldata', page=data.next_num) }}" class="btn btn-default">Next</a>
+        {% endif %}
+    </div></div>
+{% endblock %}

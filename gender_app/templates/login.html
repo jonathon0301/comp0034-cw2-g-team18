@@ -1,0 +1,53 @@
+{#{% extends 'layout.html' %}#}
+{% extends 'bootstrap/base.html' %}
+{% block title %}LogIn{% endblock title %}
+
+{% block styles %}
+    {{ super() }}
+    <!-- url_for函数，加载静态文件-->
+{#    <link href="{{ url_for('static', filename='login.css') }}" rel="stylesheet">#}
+{% endblock styles %}
+{% block content %}
+    <style>
+    .form-login {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+.form-login .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+}
+</style>
+    <div class="container form-login">
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    <form action="/login" method="post" class="form-login">
+        <div class="form-group">
+            <h5  style="text-align: center;font-size: x-large"><a href="{{ url_for('index') }}">welcome login</a></h5>
+        </div>
+        <div class="form-group">
+            <label for="id_username">username</label>
+            <input type="text" class="form-control" style="margin-top: 10px" name="username" id="id_username" placeholder="Enter your user name" autofocus required>
+        </div>
+        <div class="form-group" style="margin-top: 20px">
+            <label for="id_password">password</label>s
+            <input type="password" class="form-control" style="margin-top: 10px" name="password" id="id_password" placeholder="Enter your user password" required>
+        </div>
+        <div class="form-group" style="margin-top: 10px">
+            <a href="{{ url_for('register') }}" class="btn btn-success pull-left">register</a>
+            <button type="submit" class="btn btn-primary pull-right">login</button>
+        </div>
+    </form>
+
+{% endblock %}
