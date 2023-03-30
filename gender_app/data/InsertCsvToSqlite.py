@@ -1,10 +1,10 @@
 import csv
 import sqlite3
 
-# 创建数据库连接
+# Create connection between db
 conn = sqlite3.connect('gender.db')
 c = conn.cursor()
-# 读取CSV文件并插入到表格中
+# Read csv and add into table
 with open('gender_pay_gap.csv', newline='') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
@@ -33,6 +33,5 @@ with open('gender_pay_gap.csv', newline='') as csvfile:
              FemaleLowerMiddleQuartile, MaleUpperMiddleQuartile, FemaleUpperMiddleQuartile, MaleTopQuartile,
              FemaleTopQuartile, EmployerSize, Region, Industry, EmployerSizeMedian))
 
-# 提交更改并关闭连接
 conn.commit()
 conn.close()
