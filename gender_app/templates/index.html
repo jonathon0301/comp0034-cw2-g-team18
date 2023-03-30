@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'layout.html' %}
+{% set title = 'Gender pay gap service Home' %}
+{% block content %}
 
-</body>
-</html>
+<h1>Gender pay gap service events</h1>
+<p>We have data for the following events</p>
+    {% if session.is_login %}
+            <ul>
+    <li><a href="{{ url_for('display_event', event_id="Industry")}}">Industry</a></li>
+    <li><a href="{{ url_for('display_event', event_id="Region")}}">Region</a></li>
+    <li><a href="{{ url_for('display_event', event_id="EmployerSize")}}">EmployerSizeMedian</a></li>
+</ul>
+        {% else %}
+            <h1>Please Log In!</h1>
+        {% endif %}
+
+    <div>{{ table|safe }}</div>
+{% endblock %}
