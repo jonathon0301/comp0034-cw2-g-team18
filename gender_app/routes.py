@@ -53,7 +53,7 @@ def get_Average(field_type, value):
     return max_avg
 
 
-def get_madian(field_type, value):
+def get_median(field_type, value):
     query_result = Gender_pay.query.filter_by(**{field_type: value}).all()
     diff_mean_hourly_percent_median = get_median_by_field(query_result=query_result, field_name="DiffMeanHourlyPercent")
     diff_median_hourly_percent_median = get_median_by_field(query_result=query_result,
@@ -118,7 +118,7 @@ def display_data(field_type, field_name):
     print("field_name:{}".format(field_name))
     print("field_type:{}".format(field_type))
     response_avg = get_Average(field_type, field_name)
-    response_median = get_madian(field_type, field_name)
+    response_median = get_median(field_type, field_name)
     response = response_avg, response_median
     print("response:{}".format(response))
     return render_template("table.html", data_list=response)
