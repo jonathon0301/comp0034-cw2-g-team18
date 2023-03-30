@@ -8,11 +8,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 @pytest.fixture
 def driver():
     driver = BasePage(
-        driver=webdriver.Chrome(
-            service=Service(executable_path=ChromeDriverManager(
-                url="https://npm.taobao.org/mirrors/chromedriver/"
-            ).install())
-        ))
-    # webdriver.Chrome(executable_path='/gender_app/test/chromedriver_mac_arm64/chromedriver'))
+        driver=webdriver.Chrome(executable_path='/comp0034-cw2-g-team18/gender_app/test/chromedriver_mac_arm64'
+                                                '/chromedriver'))
     yield driver
     driver.quit()
