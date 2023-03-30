@@ -2,8 +2,8 @@
 {% set title = 'Gender pay gap service Home' %}
 {% block content %}
 
-<h1>Gender pay gap service events</h1>
-<p>We have data for the following events</p>
+<h1>Gender pay gap REST API</h1>
+<p>Choose which category you wanna have a look at the gender pay gap from</p>
     {% if session.is_login %}
             <ul>
     <li><a href="{{ url_for('display_event', event_id="Industry")}}">Industry</a></li>
