@@ -121,7 +121,7 @@ def display_data(field_type, field_name):
 
 
 @app.route('/')
-def index():  # put application's code here
+def index():
     response = get_events()
     return render_template("index.html", event_list=response)
 
