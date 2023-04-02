@@ -73,3 +73,22 @@ def test_register(driver):
     assert (
             "welcome login" in driver.find_element(By.XPATH, '/html/body/form/div[1]/h5/a').text
     )
+
+
+def test_display_alldata(driver):
+    driver.get('http://127.0.0.1:9000/')
+    time.sleep(3)
+    driver.implicitly_wait(15)
+    driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[2]/a').click()
+    driver.find_element(By.XPATH, '//*[@id="id_username"]').send_keys('admin')
+    driver.find_element(By.XPATH, '//*[@id="id_password"]').send_keys('111')
+    driver.find_element(By.XPATH, '/html/body/form/div[4]/button').click()
+    time.sleep(2)
+    driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[2]/a').click()
+    time.sleep(2)
+    assert (
+            "DiffMeanHourlyPercent" in driver.find_element(By.XPATH, '/html/body/div/div/table/thead/tr/th[1]').text
+    )
+    assert (
+            "DiffMedianHourlyPercent" in driver.find_element(By.XPATH, '/html/body/div/div/table/thead/tr/th[2]').text
+    )
