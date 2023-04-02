@@ -36,12 +36,12 @@ def test_login_box(driver):
     driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[2]/a').click()
     time.sleep(2)
     assert (
-        "DiffMeanHourlyPercent" in driver.find_element(By.XPATH, '/html/body/div/div/table/thead/tr/th[1]').text
+            "DiffMeanHourlyPercent" in driver.find_element(By.XPATH, '/html/body/div/div/table/thead/tr/th[1]').text
     )
     driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[3]/a').click()
     time.sleep(2)
     assert (
-        "Please Log In!" in driver.find_element(By.XPATH, '/html/body/div/h1[2]').text
+            "Please Log In!" in driver.find_element(By.XPATH, '/html/body/div/h1[2]').text
     )
 
 
