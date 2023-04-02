@@ -56,13 +56,37 @@ def test_register(driver):
     time.sleep(2)
     driver.implicitly_wait(15)
     driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[3]/a').click()
-    driver.find_element(By.XPATH, '//*[@id="id_username"]').send_keys('admin{}'.format(random.randint(0, 100)))
+    driver.find_element(By.XPATH, '//*[@id="id_username"]').send_keys('admin{}'.format(random.randint(0, 1000)))
     driver.find_element(By.XPATH, '//*[@id="id_password"]').send_keys('111')
     driver.find_element(By.XPATH, '//*[@id="id_confirm"]').send_keys('111')
     driver.find_element(By.XPATH, '/html/body/form/div[5]/button[2]').click()
     assert (
             "welcome login" in driver.find_element(By.XPATH, '/html/body/form/div[1]/h5/a').text
     )
+
+
+def test_unmatch_register(driver):
+    driver.get('http://127.0.0.1:9000/')
+    time.sleep(2)
+    driver.implicitly_wait(15)
+    driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[3]/a').click()
+    driver.find_element(By.XPATH, '//*[@id="id_username"]').send_keys('admin{}'.format(random.randint(0, 100)))
+    driver.find_element(By.XPATH, '//*[@id="id_password"]').send_keys('111')
+    driver.find_element(By.XPATH, '//*[@id="id_confirm"]').send_keys('222')
+    driver.find_element(By.XPATH, '/html/body/form/div[5]/button[2]').click()
+    assert "Unmatched!"
+
+
+def test_exist_username(driver):
+    driver.get('http://127.0.0.1:9000/')
+    time.sleep(2)
+    driver.implicitly_wait(15)
+    driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[3]/a').click()
+    driver.find_element(By.XPATH, '//*[@id="id_username"]').send_keys('admin')
+    driver.find_element(By.XPATH, '//*[@id="id_password"]').send_keys('111')
+    driver.find_element(By.XPATH, '//*[@id="id_confirm"]').send_keys('111')
+    driver.find_element(By.XPATH, '/html/body/form/div[5]/button[2]').click()
+    assert "Username Exists!"
 
 
 def test_display_alldata(driver, login):
