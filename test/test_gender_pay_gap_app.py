@@ -11,7 +11,7 @@ def test_index_html(driver):
     assert h1_text.casefold() == "Please Log In!".casefold()
 
 
-def test_procedure(driver, login):
+def test_data_query(driver, login):
     time.sleep(2)
     assert (
             "Industry" in driver.find_element(By.XPATH, '/html/body/div/ul/li[1]/a').text
