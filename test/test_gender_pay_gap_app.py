@@ -11,14 +11,7 @@ def test_index_html(driver):
     assert h1_text.casefold() == "Please Log In!".casefold()
 
 
-def test_login_box(driver):
-    driver.get("http://127.0.0.1:9000/")
-    time.sleep(3)
-    driver.implicitly_wait(15)
-    driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[2]/a').click()
-    driver.find_element(By.XPATH, '//*[@id="id_username"]').send_keys('admin')
-    driver.find_element(By.XPATH, '//*[@id="id_password"]').send_keys('111')
-    driver.find_element(By.XPATH, '/html/body/form/div[4]/button').click()
+def test_procedure(driver, login):
     time.sleep(2)
     assert (
             "Industry" in driver.find_element(By.XPATH, '/html/body/div/ul/li[1]/a').text
@@ -38,6 +31,10 @@ def test_login_box(driver):
     assert (
             "DiffMeanHourlyPercent" in driver.find_element(By.XPATH, '/html/body/div/div/table/thead/tr/th[1]').text
     )
+
+
+def test_logout(driver, login):
+    time.sleep(2)
     driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[3]/a').click()
     time.sleep(2)
     assert (
@@ -45,14 +42,7 @@ def test_login_box(driver):
     )
 
 
-def test_edge_case(driver):
-    driver.get("http://127.0.0.1:9000/")
-    time.sleep(3)
-    driver.implicitly_wait(15)
-    driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[2]/a').click()
-    driver.find_element(By.XPATH, '//*[@id="id_username"]').send_keys('admin')
-    driver.find_element(By.XPATH, '//*[@id="id_password"]').send_keys('111')
-    driver.find_element(By.XPATH, '/html/body/form/div[4]/button').click()
+def test_edge_case(driver, login):
     time.sleep(2)
     driver.find_element(By.XPATH, '/html/body/div/ul/li[3]/a').click()
     time.sleep(2)
@@ -75,14 +65,7 @@ def test_register(driver):
     )
 
 
-def test_display_alldata(driver):
-    driver.get('http://127.0.0.1:9000/')
-    time.sleep(3)
-    driver.implicitly_wait(15)
-    driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[2]/a').click()
-    driver.find_element(By.XPATH, '//*[@id="id_username"]').send_keys('admin')
-    driver.find_element(By.XPATH, '//*[@id="id_password"]').send_keys('111')
-    driver.find_element(By.XPATH, '/html/body/form/div[4]/button').click()
+def test_display_alldata(driver, login):
     time.sleep(2)
     driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[2]/a').click()
     time.sleep(2)
