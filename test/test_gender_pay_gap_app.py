@@ -39,6 +39,21 @@ def test_home(driver, login):
     )
 
 
+def test_unmatch_login(driver):
+    driver.get('http://127.0.0.1:9000/')
+    driver.implicitly_wait(15)
+    login_link = driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[2]/a')
+    login_link.click()
+    username_input = driver.find_element(By.XPATH, '//*[@id="id_username"]')
+    username_input.send_keys('admin')
+    password_input = driver.find_element(By.XPATH, '//*[@id="id_password"]')
+    password_input.send_keys('123456')
+    login_button = driver.find_element(By.XPATH, '/html/body/form/div[4]/button')
+    login_button.click()
+    time.sleep(2)
+    assert "Wrong Username or Password!"
+
+
 def test_logout(driver, login):
     time.sleep(2)
     driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[3]/a').click()

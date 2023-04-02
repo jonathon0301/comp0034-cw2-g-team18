@@ -150,7 +150,7 @@ def login():
             # print(sql)
             # is_valid_user = cur.execute(sql).fetchone()
         except:
-            flash('Wrong Username or Password！')
+            flash('Wrong Username or Password!')
             return render_template('login.html')
         finally:
             conn.close()
@@ -161,7 +161,7 @@ def login():
             session['name'] = username
             return redirect('/')
         else:
-            flash('Wrong Username or Password！')
+            flash('Wrong Username or Password!')
             return render_template('login.html')
     return render_template('login.html')
 
