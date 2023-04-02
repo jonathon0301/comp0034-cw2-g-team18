@@ -26,10 +26,16 @@ def test_procedure(driver, login):
     assert (
             "Average" in driver.find_element(By.XPATH, '/html/body/div/table/thead/tr/th[2]').text
     )
-    driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[2]/a').click()
+
+
+def test_home(driver, login):
+    time.sleep(2)
+    driver.find_element(By.XPATH, '/html/body/div/ul/li[1]/a').click()
+    time.sleep(2)
+    driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[1]/a').click()
     time.sleep(2)
     assert (
-            "DiffMeanHourlyPercent" in driver.find_element(By.XPATH, '/html/body/div/div/table/thead/tr/th[1]').text
+            "Industry" in driver.find_element(By.XPATH, '/html/body/div/ul/li[1]/a').text
     )
 
 
