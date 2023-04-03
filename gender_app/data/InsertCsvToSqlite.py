@@ -5,7 +5,7 @@ import sqlite3
 conn = sqlite3.connect('gender.db')
 c = conn.cursor()
 # Read csv and add into table
-with open('gender_pay_gap.csv', newline='') as csvfile:
+with open('gender_pay_gap_prepared.csv', newline='') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         DiffMeanHourlyPercent = row['DiffMeanHourlyPercent']
