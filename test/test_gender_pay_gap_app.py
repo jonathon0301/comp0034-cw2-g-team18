@@ -107,7 +107,11 @@ def test_edge_case(driver, login):
 
 
 def test_register(driver):
-
+    """
+    GIVEN the user is not logged in
+    WHEN the user registers with a valid username and matched password
+    THEN the app directs to the log in page
+    """
     driver.get('http://127.0.0.1:9000/')
     time.sleep(2)
     driver.implicitly_wait(15)
@@ -122,6 +126,11 @@ def test_register(driver):
 
 
 def test_unmatch_register(driver):
+    """
+    GIVEN the user is not logged in
+    WHEN the user tries to register with unmatched password
+    THEN the flash message will warn "Unmatched!"
+    """
     driver.get('http://127.0.0.1:9000/')
     time.sleep(2)
     driver.implicitly_wait(15)
@@ -134,6 +143,11 @@ def test_unmatch_register(driver):
 
 
 def test_exist_username(driver):
+    """
+    GIVEN the user is not logged in
+    WHEN the user wants to register with an existing username
+    THEN the flash message will show "Username Exists!"
+    """
     driver.get('http://127.0.0.1:9000/')
     time.sleep(2)
     driver.implicitly_wait(15)
@@ -146,6 +160,11 @@ def test_exist_username(driver):
 
 
 def test_display_alldata(driver, login):
+    """
+    GIVEN the user is logged in
+    WHEN the user clicks on Gender Pay Gap Data Set button on the navigation bar
+    THEN it will present full dataset prepared by the developer
+    """
     time.sleep(2)
     driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[2]/a').click()
     time.sleep(2)
