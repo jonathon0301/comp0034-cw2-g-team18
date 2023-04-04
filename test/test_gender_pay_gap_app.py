@@ -4,6 +4,11 @@ from selenium.webdriver.common.by import By
 
 
 def test_index_html(driver):
+    """
+    GIVEN the app is not running
+    WHEN the app is called to run
+    THEN the index page will show text "Please Log In!"
+    """
     driver.get("http://127.0.0.1:9000/")
     time.sleep(5)
     h1_element = driver.find_element(By.XPATH, "/html/body/div/h1[2]")
