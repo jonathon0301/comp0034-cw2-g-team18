@@ -17,6 +17,15 @@ def test_index_html(driver):
 
 
 def test_data_query(driver, login):
+    """
+    GIVEN the app is running
+    WHEN the user successfully logged in
+    THEN text "Industry" will be shown on the page
+    WHEN the user clicks on "Industry"
+    THEN text "Education" will be shown on the page
+    WHEN the user clicks on "Education"
+    THEN text "Average" will be shown on the page
+    """
     time.sleep(2)
     assert (
             "Industry" in driver.find_element(By.XPATH, '/html/body/div/ul/li[1]/a').text
@@ -34,6 +43,11 @@ def test_data_query(driver, login):
 
 
 def test_home(driver, login):
+    """
+    GIVEN the app is running, user successfully logged in, and user is on the data table page
+    WHEN the user clicks on "Home" on the navigation bar
+    THEN the app returns to the index_second page
+    """
     time.sleep(2)
     driver.find_element(By.XPATH, '/html/body/div/ul/li[1]/a').click()
     time.sleep(2)
@@ -45,6 +59,11 @@ def test_home(driver, login):
 
 
 def test_unmatch_login(driver):
+    """
+    GIVEN the user is trying to log in
+    WHEN the password and username are not matched as in the database
+    THEN the flash message will show "Wrong Username or Password!"
+    """
     driver.get('http://127.0.0.1:9000/')
     driver.implicitly_wait(15)
     login_link = driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[2]/a')
@@ -60,6 +79,11 @@ def test_unmatch_login(driver):
 
 
 def test_logout(driver, login):
+    """
+    GIVEN the user is logged in
+    WHEN the user clicks on Logout on the Navigation Bar
+    THEN the user will be logged out to the index page
+    """
     time.sleep(2)
     driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[3]/a').click()
     time.sleep(2)
@@ -69,6 +93,11 @@ def test_logout(driver, login):
 
 
 def test_edge_case(driver, login):
+    """
+    GIVEN the user is logged in
+    WHEN the user tries to look at data of companies which has Not Provided as Employer Size
+    THEN it will raise ValueError
+    """
     time.sleep(2)
     driver.find_element(By.XPATH, '/html/body/div/ul/li[3]/a').click()
     time.sleep(2)
@@ -78,6 +107,7 @@ def test_edge_case(driver, login):
 
 
 def test_register(driver):
+
     driver.get('http://127.0.0.1:9000/')
     time.sleep(2)
     driver.implicitly_wait(15)
