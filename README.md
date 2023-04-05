@@ -430,7 +430,8 @@ The Chrome browser on the computer will be automatically opened to present the a
 You can also choose to run the test by simply clicking the 'run' button on the IDE to run the test file. Note that you 
 may need to set your IDE default setting of testing to pytest. Results are shown below:
 
-![](screenshots/testrun.png)
+![](screenshots/testrun.png
+
 ### 2.4 Test Results
 All tests passed!
 ![](screenshots/testresults.png)
