@@ -63,3 +63,12 @@ After logged in, the user can log out by clicking button on a navigation bar, wh
 
 ![](screenshots/logout.png)
 
+### 1.4 Display all data
+The user also has access to the content of original [csv dataset](gender_app/data/gender_pay_gap_prepared.csv) 
+prepared by the developer by clicking on 'Gender Pay Gap Dataset' button on the navigation bar after logging in. As the 
+original dataset is quite large, it was separated into 13634 pages, where users can click to change the page. **This feature 
+should be updated in the later version, which should allow users to jump into a specific page or can search/filter certain 
+data.** The page is corresponding to [data_table.html](gender_app/templates/data_table.html).
+
+![](screenshots/datatable.png)
+
