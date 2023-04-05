@@ -12,7 +12,8 @@ the chromedriver is downloaded to [chromedriver_mac_arm64](test/chromedriver_mac
 folder. You may need to execute it first before going to testing;
 4. The server when running the app is set to "127.0.0.1:9000" in [config.py](gender_app/config.py), please make sure it 
 is not taken up;
-5. The CI workflow was implemented by changing some default settings of GitHub Python application. The document can be 
+5. To run the app, you can simply open [app.py](gender_app/app.py) and click 'run' on IDE such as PyCharm.
+6. The CI workflow was implemented by changing some default settings of GitHub Python application. The document can be 
 seen in [python-app.yml](.github/workflows/python-app.yml). Linting and dependency management can also be seen from it.
 
 ## 1. Gender Pay Gap REST API
@@ -77,4 +78,265 @@ data.** The page is corresponding to [data_table.html](gender_app/templates/data
 ![](screenshots/datatable.png)
 
 ## 2. Testing
-We have created 12 test functions with automated testing tool Selenium to test the application
+
+In order to test the developed app, we marked the [gender_app](gender_app) directory as Sources Root and marked the 
+[test](test) directory as Test Sources Root. he python file used to write testing code is named as [test_gender_app.py](test/test_gender_app.py) 
+and put in a test directory. Meanwhile, a [conftest.py](test/conftest.py) is also created in the same 
+directory as the testing file to include fixtures to be used during testing.
+
+The app was tested with Selenium and Pytest. Meanwhile, other tools including coverage report and continuous integration 
+are also used to test the application.
+
+### 2.1 Fixtures
+We have created two pytest fixtures in the [conftest.py](test/conftest.py).
+
+The first one is used to set the web driver to ChromeDriver downloaded as mentioned above so that the 
+driver configuration can be commonly used for every test in the testing file. Code for creating the fixture:
+```ruby
+@pytest.fixture
+def driver():
+    driver = BasePage(
+        driver=webdriver.Chrome(executable_path='/comp0034-cw2-g-team18/gender_app/test/chromedriver_mac_arm64'
+                                                '/chromedriver'))
+    yield driver
+    driver.quit()
+```
+The second one is named as login, which allows test code to be succinct as most features require login before testing, so 
+that we don't need to write code for login procedures for all tests. Code for creating the fixture:
+```ruby
+@pytest.fixture
+def login(driver):
+    driver.get('http://127.0.0.1:9000/')
+    driver.implicitly_wait(15)
+    login_link = driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[2]/a')
+    login_link.click()
+    username_input = driver.find_element(By.XPATH, '//*[@id="id_username"]')
+    username_input.send_keys('admin')
+    password_input = driver.find_element(By.XPATH, '//*[@id="id_password"]')
+    password_input.send_keys('111')
+    login_button = driver.find_element(By.XPATH, '/html/body/form/div[4]/button')
+    login_button.click()
+```
+
+### 2.2 Tests
+We have created 12 test functions with automated testing tool Selenium to test the application, which covers all routes 
+created in [routes.py](gender_app/routes.py) and considers some extreme situations. Each test was described in 
+'GIVEN-WHEN-THEN' approach.
+
+#### Test Function 1: test_index_html
+This test is used to test whether it shows the correct page when opening the app. To describe it in 'GIVEN-WHEN-THEN' 
+approach:
+
+    """
+    GIVEN the app is not running
+    WHEN the app is called to run
+    THEN the index page will show text "Please Log In!"
+    """
+
+Code for this test:
+
+```ruby
+def test_index_html(driver):
+    driver.get("http://127.0.0.1:9000/")
+    time.sleep(5)
+    h1_element = driver.find_element(By.XPATH, "/html/body/div/h1[2]")
+    h1_text = h1_element.text
+    assert h1_text.casefold() == "Please Log In!".casefold()
+```
+
+#### Test Function 2: test_main_function
+This test is used to test the main function of the app, which is to check data based on users preference. It takes choosing 
+'Industry' and 'Education' as an example.
+
+    """
+    GIVEN the app is running
+    WHEN the user successfully logged in
+    THEN text "Industry" will be shown on the page
+    WHEN the user clicks on "Industry"
+    THEN text "Education" will be shown on the page
+    WHEN the user clicks on "Education"
+    THEN text "Average" will be shown on the page
+    """
+
+Code for this test:
+```ruby
+def test_main_function(driver, login):
+    time.sleep(2)
+    assert (
+            "Industry" in driver.find_element(By.XPATH, '/html/body/div/ul/li[1]/a').text
+    )
+    driver.find_element(By.XPATH, '/html/body/div/ul/li[1]/a').click()
+    time.sleep(2)
+    assert (
+            "Education" in driver.find_element(By.XPATH, '/html/body/div/ul/li[1]/a').text
+    )
+    driver.find_element(By.XPATH, '/html/body/div/ul/li[1]/a').click()
+    time.sleep(2)
+    assert (
+            "Average" in driver.find_element(By.XPATH, '/html/body/div/table/thead/tr/th[2]').text
+    )
+```
+
+#### Test Function 3: test_home
+This test is used to verify whether clicking on 'Home' on the navigation bar will direct the user back to the homepage (index page).
+
+    """
+    GIVEN the app is running, user successfully logged in, and user is on the data table page
+    WHEN the user clicks on "Home" on the navigation bar
+    THEN the app returns to the index_second page
+    """
+
+Code:
+```ruby
+def test_home(driver, login):
+    time.sleep(2)
+    driver.find_element(By.XPATH, '/html/body/div/ul/li[1]/a').click()
+    time.sleep(2)
+    driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[1]/a').click()
+    time.sleep(2)
+    assert (
+            "Industry" in driver.find_element(By.XPATH, '/html/body/div/ul/li[1]/a').text
+    )
+```
+
+#### Test Function 4: test_unmatch_login
+This function is used to test whether the system can recognize unmatched username and password.
+
+    """
+    GIVEN the user is trying to log in
+    WHEN the password and username are not matched as in the database
+    THEN the flash message will show "Wrong Username or Password!"
+    """
+
+Code:
+```ruby
+def test_unmatch_login(driver):
+    driver.get('http://127.0.0.1:9000/')
+    driver.implicitly_wait(15)
+    login_link = driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[2]/a')
+    login_link.click()
+    username_input = driver.find_element(By.XPATH, '//*[@id="id_username"]')
+    username_input.send_keys('admin')
+    password_input = driver.find_element(By.XPATH, '//*[@id="id_password"]')
+    password_input.send_keys('123456')
+    login_button = driver.find_element(By.XPATH, '/html/body/form/div[4]/button')
+    login_button.click()
+    time.sleep(2)
+    assert "Wrong Username or Password!"
+```
+
+#### Test Function 5: test_logout
+This function is used to check whether the user can successfully log out and return to the index page.
+
+    """
+    GIVEN the user is logged in
+    WHEN the user clicks on Logout on the Navigation Bar
+    THEN the user will be logged out to the index page
+    """
+Code for this test:
+```ruby
+def test_logout(driver, login):
+    time.sleep(2)
+    driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[3]/a').click()
+    time.sleep(2)
+    assert (
+            "Please Log In!" in driver.find_element(By.XPATH, '/html/body/div/h1[2]').text
+    )
+```
+
+#### Test Function 6: test_login_to_register
+This function is used to test whether the 'register' button at the login page can direct user to register page.
+
+    """
+    GIVEN the app is running and is on log in page
+    WHEN the user clicks on Register button
+    THEN it directs to the register page
+    """
+
+Code for this test:
+```ruby
+def test_login_to_register(driver):
+    driver.get('http://127.0.0.1:9000/')
+    driver.implicitly_wait(15)
+    login_link = driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[2]/a')
+    login_link.click()
+    register_button = driver.find_element(By.XPATH, '/html/body/form/div[4]/a')
+    register_button.click()
+    assert (
+            "register" in driver.find_element(By.XPATH, '/html/body/form/div[1]/h5').text
+    )
+```
+
+#### Test Function 7: test_edge_case
+This function is used to test an edge case where the user chooses 'Employer Size' and 'Not Provided'. Since the queried 
+data is not provided in the original dataset, it should return ValueError in debug mode.
+
+    """
+    GIVEN the user is logged in
+    WHEN the user tries to look at data of companies which has Not Provided as Employer Size
+    THEN it will raise ValueError
+    """
+
+Code for this test:
+```ruby
+def test_edge_case(driver, login):
+    time.sleep(2)
+    driver.find_element(By.XPATH, '/html/body/div/ul/li[3]/a').click()
+    time.sleep(2)
+    driver.find_element(By.XPATH, '/html/body/div/ul/li[5]/a').click()
+    time.sleep(2)
+    assert ValueError
+```
+
+#### Test Function 8: test_register
+This function tests whether a successful register will direct the user to the login page. **Note: the test will automatically 
+register with a username of admin.xxx where xxx represents a random integer between 0 to 1000. It will be very rare if you 
+attempt testing for several times and have same username between two of them. However, possibility still exists, so this 
+test may fail.**
+
+    """
+    GIVEN the user is not logged in
+    WHEN the user registers with a valid username and matched password
+    THEN the app directs to the login page
+    """
+
+Code for this test:
+```ruby
+def test_register(driver):
+    driver.get('http://127.0.0.1:9000/')
+    time.sleep(2)
+    driver.implicitly_wait(15)
+    driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[3]/a').click()
+    driver.find_element(By.XPATH, '//*[@id="id_username"]').send_keys('admin{}'.format(random.randint(0, 1000)))
+    driver.find_element(By.XPATH, '//*[@id="id_password"]').send_keys('111')
+    driver.find_element(By.XPATH, '//*[@id="id_confirm"]').send_keys('111')
+    driver.find_element(By.XPATH, '/html/body/form/div[5]/button[2]').click()
+    assert (
+            "welcome login" in driver.find_element(By.XPATH, '/html/body/form/div[1]/h5/a').text
+    )
+```
+
+#### Test Function 9: test_register_reset
+This function is used to test whether the reset button at register page works.
+
+    """
+    GIVEN the user has put some strings in registration form
+    WHEN the user clicks reset during registration
+    THEN all inputs will be deleted
+    """
+
+Code for this test:
+```ruby
+def test_register_reset(driver):
+    driver.get('http://127.0.0.1:9000/')
+    time.sleep(2)
+    driver.implicitly_wait(15)
+    driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[3]/a').click()
+    driver.find_element(By.XPATH, '//*[@id="id_username"]').send_keys('admin{}'.format(random.randint(0, 1000)))
+    driver.find_element(By.XPATH, '/html/body/form/div[5]/button[1]').click()
+    assert (
+            driver.find_element(By.XPATH, '//*[@id="id_username"]').get_attribute("value") == ""
+    )
+```
+
+

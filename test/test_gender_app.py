@@ -127,7 +127,7 @@ def test_register(driver):
     """
     GIVEN the user is not logged in
     WHEN the user registers with a valid username and matched password
-    THEN the app directs to the log in page
+    THEN the app directs to the login page
     """
     driver.get('http://127.0.0.1:9000/')
     time.sleep(2)
@@ -144,7 +144,7 @@ def test_register(driver):
 
 def test_register_reset(driver):
     """
-    GIVEN the user is not logged in
+    GIVEN the user has put some strings in registration form
     WHEN the user clicks reset during registration
     THEN all inputs will be deleted
     """
