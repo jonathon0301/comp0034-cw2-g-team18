@@ -2,6 +2,7 @@ import random
 import time
 from selenium.webdriver.common.by import By
 
+
 def test_index_html(driver):
     """
     GIVEN the app is not running
