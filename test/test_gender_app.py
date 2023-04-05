@@ -2,7 +2,6 @@ import random
 import time
 from selenium.webdriver.common.by import By
 
-
 def test_index_html(driver):
     """
     GIVEN the app is not running
@@ -92,6 +91,23 @@ def test_logout(driver, login):
     )
 
 
+def test_login_to_register(driver):
+    """
+    GIVEN the app is running and is on log in page
+    WHEN the user clicks on Register button
+    THEN it directs to the register page
+    """
+    driver.get('http://127.0.0.1:9000/')
+    driver.implicitly_wait(15)
+    login_link = driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[2]/a')
+    login_link.click()
+    register_button = driver.find_element(By.XPATH, '/html/body/form/div[4]/a')
+    register_button.click()
+    assert (
+            "register" in driver.find_element(By.XPATH, '/html/body/form/div[1]/h5').text
+    )
+
+
 def test_edge_case(driver, login):
     """
     GIVEN the user is logged in
@@ -122,6 +138,23 @@ def test_register(driver):
     driver.find_element(By.XPATH, '/html/body/form/div[5]/button[2]').click()
     assert (
             "welcome login" in driver.find_element(By.XPATH, '/html/body/form/div[1]/h5/a').text
+    )
+
+
+def test_register_reset(driver):
+    """
+    GIVEN the user is not logged in
+    WHEN the user clicks reset during registration
+    THEN all inputs will be deleted
+    """
+    driver.get('http://127.0.0.1:9000/')
+    time.sleep(2)
+    driver.implicitly_wait(15)
+    driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[3]/a').click()
+    driver.find_element(By.XPATH, '//*[@id="id_username"]').send_keys('admin{}'.format(random.randint(0, 1000)))
+    driver.find_element(By.XPATH, '/html/body/form/div[5]/button[1]').click()
+    assert (
+            driver.find_element(By.XPATH, '//*[@id="id_username"]').get_attribute("value") == ""
     )
 
 
