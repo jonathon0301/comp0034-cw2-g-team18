@@ -24,3 +24,42 @@ describe what the app does with explanations in screenshots.
 ### 1.1 The index page
 The first page when entering the app will be the index page, corresponding to [index.html](gender_app/templates/index.html) 
 . When the user is not logged in, it will show command of "Please Log In!" in big size as shown below.
+
+![](screenshots/index.png)
+
+After logging in, it will present three categories for the user to choose, whether they wanna investigate the gender pay
+ gap from industry, region, or employer size as shown in the screenshot below.
+
+![](screenshots/logged_in_index.png)
+
+When the user select a certain category, it will show another index page, see [index_second.html](gender_app/templates/index_second.html), 
+which presents all unique value under that certain category for the user to choose. For example, the following screenshot 
+shows all industries in the dataset if a user chooses to investigate gender pay gap from industrial view.
+
+![](screenshots/index_second.png)
+
+### 1.2 Data page
+When the user chooses which specific industry / region / employer size of companies they wanna investigate the gender 
+pay gap, it will return a data table that shows mean and median of gender pay gap data. The html document for this page 
+can be found at [table.html](gender_app/templates/table.html). Explanations for each data can be seen by clicking 
+'About CSV data' on the [original gov.uk website](https://gender-pay-gap.service.gov.uk/viewing/download). Below is an 
+example of the data table page when users click on Education following by choosing Industry.
+
+![](screenshots/table.png)
+
+### 1.3 Log in/out & Register
+The app also includes feature of account management which allows users to create their own account and they will have to 
+log in first before seeing the data. 
+
+Here is the screenshot of login page, corresponding to [login.html](gender_app/templates/login.html).
+
+![](screenshots/login.png)
+
+And here is the register page, html document can be found at [register.html](gender_app/templates/register.html).
+
+![](screenshots/register.png)
+
+After logged in, the user can log out by clicking button on a navigation bar, which is configured in [navbar.html](gender_app/templates/navbar.html).
+
+![](screenshots/logout.png)
+
