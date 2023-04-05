@@ -16,7 +16,7 @@ def test_index_html(driver):
     assert h1_text.casefold() == "Please Log In!".casefold()
 
 
-def test_data_query(driver, login):
+def test_main_function(driver, login):
     """
     GIVEN the app is running
     WHEN the user successfully logged in
