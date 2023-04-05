@@ -51,11 +51,15 @@ example of the data table page when users click on Education following by choosi
 The app also includes feature of account management which allows users to create their own account and they will have to 
 log in first before seeing the data. 
 
-Here is the screenshot of login page, corresponding to [login.html](gender_app/templates/login.html).
+Here is the screenshot of login page, corresponding to [login.html](gender_app/templates/login.html). It will check whether 
+the username and password match with the data stored in the database.
 
 ![](screenshots/login.png)
 
-And here is the register page, html document can be found at [register.html](gender_app/templates/register.html).
+And here is the register page, html document can be found at [register.html](gender_app/templates/register.html). The 
+registered information will be stored in [gender.db](gender_app/data/gender.db), which allows user to log in in the future. 
+It has also set a series of warning when the user tries to register with existing username or enters the unmatched password 
+during registration, which will be discussed in the testing part.
 
 ![](screenshots/register.png)
 
@@ -72,3 +76,5 @@ data.** The page is corresponding to [data_table.html](gender_app/templates/data
 
 ![](screenshots/datatable.png)
 
+## 2. Testing
+We have created 12 test functions with automated testing tool Selenium to test the application
