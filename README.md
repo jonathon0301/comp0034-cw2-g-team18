@@ -22,4 +22,5 @@ features and functions such as Register / Log In and showing full dataset prepar
 describe what the app does with explanations in screenshots.
 
 ### 1.1 The index page
-When entering the app, 
+The first page when entering the app will be the index page, corresponding to [index.html](gender_app/templates/index.html) 
+. When the user is not logged in, it will show command of "Please Log In!" in big size as shown below.
