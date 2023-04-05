@@ -118,7 +118,7 @@ def login(driver):
     login_button.click()
 ```
 
-### 2.2 Tests
+### 2.2 Test Functions
 We have created 12 test functions with automated testing tool Selenium to test the application, which covers all routes 
 created in [routes.py](gender_app/routes.py) and considers some extreme situations. Each test was described in 
 'GIVEN-WHEN-THEN' approach.
@@ -339,4 +339,116 @@ def test_register_reset(driver):
     )
 ```
 
+#### Test Function 10: test_unmatch_register
+This function will test whether the system can detect unmatched two password inputs in the registration form.
 
+    """
+    GIVEN the user is not logged in
+    WHEN the user tries to register with unmatched password
+    THEN the flash message will warn "Unmatched!"
+    """
+
+Code for this test:
+```ruby
+def test_unmatch_register(driver):
+    driver.get('http://127.0.0.1:9000/')
+    time.sleep(2)
+    driver.implicitly_wait(15)
+    driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[3]/a').click()
+    driver.find_element(By.XPATH, '//*[@id="id_username"]').send_keys('admin{}'.format(random.randint(0, 100)))
+    driver.find_element(By.XPATH, '//*[@id="id_password"]').send_keys('111')
+    driver.find_element(By.XPATH, '//*[@id="id_confirm"]').send_keys('222')
+    driver.find_element(By.XPATH, '/html/body/form/div[5]/button[2]').click()
+    assert "Unmatched!"
+```
+
+#### Test Function 11: test_exist_username
+This test will test whether the system recognize existing username when user wants to register with that username. It will 
+use the admin username which registered before to perform the test.
+
+    """
+    GIVEN the user is not logged in
+    WHEN the user wants to register with an existing username
+    THEN the flash message will show "Username Exists!"
+    """
+
+Code for this test:
+```ruby
+def test_exist_username(driver):
+    driver.get('http://127.0.0.1:9000/')
+    time.sleep(2)
+    driver.implicitly_wait(15)
+    driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[3]/a').click()
+    driver.find_element(By.XPATH, '//*[@id="id_username"]').send_keys('admin')
+    driver.find_element(By.XPATH, '//*[@id="id_password"]').send_keys('111')
+    driver.find_element(By.XPATH, '//*[@id="id_confirm"]').send_keys('111')
+    driver.find_element(By.XPATH, '/html/body/form/div[5]/button[2]').click()
+    assert "Username Exists!"
+```
+
+#### Test Function 12: test_display_alldata
+This function tests whether the full dataset is presented when clicking on Gender Pay Gap Data Set button on the 
+navigation bar by detecting specific strings.
+
+    """
+    GIVEN the user is logged in
+    WHEN the user clicks on Gender Pay Gap Data Set button on the navigation bar
+    THEN it will present full dataset prepared by the developer
+    """
+
+Code for this test:
+```ruby
+def test_display_alldata(driver, login):
+    time.sleep(2)
+    driver.find_element(By.XPATH, '//*[@id="navbarSupportedContent"]/ul/li[2]/a').click()
+    time.sleep(2)
+    assert (
+            "DiffMeanHourlyPercent" in driver.find_element(By.XPATH, '/html/body/div/div/table/thead/tr/th[1]').text
+    )
+    assert (
+            "DiffMedianHourlyPercent" in driver.find_element(By.XPATH, '/html/body/div/div/table/thead/tr/th[2]').text
+    )
+```
+
+### 2.3 Running the test
+To run the test, you will first need to execute the app by clicking 'run' on your IDE to run the [app.py](gender_app/app.py) 
+and please type and run
+
+```ruby 
+pytest test/test_gender_app.py
+``` 
+
+in the terminal.
+
+The Chrome browser on the computer will be automatically opened to present the app. There will be a banner showing 
+'Chrome is being controlled by automated test software.' as shown below:
+
+![](screenshots/test%20run.png)
+
+***Note: it takes approximately 2 minutes to finish all tests***
+
+### 2.4 Test Results
+All tests passed!
+![](screenshots/testresults.png)
+
+### 2.5 Applying Coverage
+We have also implemented ```coverage``` python package. We can type ```coverage run -m pytest``` 
+in the terminal to run all the test functions and record the coverage information. The result after running coverage is 
+shown below:
+![](screenshots/coverage.png)
+We can also generate a coverage report by entering ```coverage report``` in the terminal after running coverage. It is 
+shown in the image below:
+![](screenshots/covrepo.png)
+
+### 2.6 Continuous Integration
+Continuous integration (CI) involves developers frequently integrating their code changes into a central repository, 
+followed by automated testing and building processes to verify that the code operates as intended. The aim of CI is to 
+identify and resolve issues promptly, allowing developers to concentrate on writing new code and incorporating fresh 
+functionalities.
+
+Like what we did before, we have created a [workflow](.github/workflows/python-app.yml) on GitHub Actions 
+based on Python Application yml file provided on GitHub. However, the default settings reports errors all the time even 
+though dash app and tests went properly on IDE. Therefore, we have changed the settings with code from marketplace. The 
+screenshot for a successful result is shown below:
+![](screenshots/CI.png)
+Dependency management and linting can also be shown in this CI workflow.
