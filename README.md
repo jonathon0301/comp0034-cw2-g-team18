@@ -20,3 +20,6 @@ We have developed a REST API which allows users to check relevant gender pay gap
  look at from their desired viewpoint (from a certain industry, region, or employer size). It also contains additional 
 features and functions such as Register / Log In and showing full dataset prepared before in COMP0035. This section will 
 describe what the app does with explanations in screenshots.
+
+### 1.1 The index page
+When entering the app, 
