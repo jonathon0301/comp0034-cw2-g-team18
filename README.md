@@ -7,13 +7,10 @@ about how we tested the developed app with evidence of work.
 ## Set-up instructions
 1. URL to the GitHub repository: https://github.com/ucl-comp0035/comp0034-cw2-g-team18.git ;
 2. Please install all necessary Python packages listed in [requirements.txt](requirements.txt);
-3. Browser used to test the Dash created in this coursework is Chrome 109 version and our group members use Mac OS, 
-the chromedriver is downloaded to [chromedriver_mac_arm64](test/chromedriver_mac_arm64) directory under [test](test) 
-folder. You may need to execute it first before going to testing;
-4. The server when running the app is set to "127.0.0.1:9000" in [config.py](gender_app/config.py), please make sure it 
+3. The server when running the app is set to "127.0.0.1:9000" in [config.py](gender_app/config.py), please make sure it 
 is not taken up;
-5. To run the app, you can simply open [app.py](gender_app/app.py) and click 'run' on IDE such as PyCharm.
-6. The CI workflow was implemented by changing some default settings of GitHub Python application. The document can be 
+4. To run the app, you can simply open [app.py](gender_app/app.py) and click 'run' on IDE such as PyCharm.
+5. The CI workflow was implemented by changing some default settings of GitHub Python application. The document can be 
 seen in [python-app.yml](.github/workflows/python-app.yml). Linting and dependency management can also be seen from it.
 
 ## 1. Gender Pay Gap REST API

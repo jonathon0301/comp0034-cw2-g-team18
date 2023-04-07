@@ -1,14 +1,20 @@
 import pytest
 from basepage import BasePage
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 
 
 @pytest.fixture
 def driver():
     driver = BasePage(
-        driver=webdriver.Chrome(executable_path='/comp0034-cw2-g-team18/gender_app/test/chromedriver_mac_arm64'
-                                                '/chromedriver'))
+        driver=webdriver.Chrome(
+            service=Service(executable_path=ChromeDriverManager(
+                url="https://sites.google.com/a/chromium.org/chromedriver/downloads"
+            ).install())
+        ))
+    # webdriver.Chrome(executable_path='/gender_app/test/chromedriver_mac_arm64/chromedriver'))
     yield driver
     driver.quit()
 
