@@ -26,7 +26,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install flake8 pytest
+        pip install flake8 pytest coverage
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
       run: |
@@ -35,9 +35,10 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Start app.py
-      run: python gender_app/app.py &
-      background: true
+      run: python gender_app/app.py &  # Start the app.py in the background
     - name: Wait for app.py to start
-      run: sleep 5
+      run: sleep 5  # Wait for a few seconds for the app to start (if needed)
     - name: Run pytest with coverage
-      run: coverage run -m pytest  # Run pytest with coverage
+      run: |
+        coverage run -m pytest  # Run pytest with coverage
+        wait $!
