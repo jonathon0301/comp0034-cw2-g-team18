@@ -34,17 +34,19 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Run pytest with coverage
-      run: |
-        python gender_app/app.py &  # Start the app.py in the background
-        sleep 5  # Wait for a few seconds for the app to start (if needed)
-        pip install coverage
-        python -c "from webdriver_manager.chrome import ChromeDriverManager; ChromeDriverManager(version='111.0.5563.64').install()"
-        coverage run -m pytest  # Run pytest with coverage
-        timeout-minutes: 15  # Optionally, set a timeout for the pytest command to prevent it from running indefinitely
+    - name: Install chromedriver
+      run: pip install webdriver-manager
 
-    - name: Collect coverage data
-      run: |
-        coverage report -m  # Generate a coverage report
-        coverage xml -o coverage.xml  # Optionally, generate an XML report for further processing
+    - name: Run tests with coverage
+      run: coverage run -m pytest
+
+    - name: Generate coverage report
+      run: coverage html
+      # Optional: You can customize the coverage report path, e.g., "coverage html -d coverage_report"
+
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage-report
+        path: htmlcov/
 
