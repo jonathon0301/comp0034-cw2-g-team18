@@ -9,7 +9,12 @@ from selenium.webdriver.common.by import By
 @pytest.fixture
 def driver():
     driver = BasePage(
-        webdriver.Chrome(executable_path='/comp0034-cw2-g-team18/test/chromedriver_mac_arm64/chromedriver'))
+        driver=webdriver.Chrome(
+            service=Service(executable_path=ChromeDriverManager(
+                url="https://sites.google.com/chromium.org/driver/"
+            ).install())
+        ))
+    # webdriver.Chrome(executable_path='/gender_app/test/chromedriver_mac_arm64/chromedriver'))
     yield driver
     driver.quit()
 
