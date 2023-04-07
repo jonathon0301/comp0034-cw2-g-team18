@@ -25,15 +25,15 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest coverage
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Install Chromium and ChromeDriver
-      run: |
-        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-        sudo dpkg -i google-chrome-stable_current_amd64.deb
-        sudo apt-get -y --no-install-recommends install ./google-chrome-stable_current_amd64.deb
-        wget https://chromedriver.storage.googleapis.com/VERSION_NUMBER/chromedriver_linux64.zip
-        unzip chromedriver_linux64.zip
-        chmod +x chromedriver
-        sudo mv chromedriver /usr/local/bin/
+        # Install Chrome and ChromeDriver
+        # Update the package list
+        sudo apt-get update
+        # Install Chrome stable
+        sudo apt-get install -y google-chrome-stable
+        # Install Chromium
+        sudo apt-get install -y chromium-browser
+        # Install Chromium ChromeDriver
+        sudo apt-get install -y chromium-chromedriver
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
