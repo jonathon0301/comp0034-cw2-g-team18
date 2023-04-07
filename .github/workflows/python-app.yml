@@ -46,11 +46,10 @@ jobs:
       run: sleep 5  # Wait for a few seconds for the app to start (if needed)
     - name: Run pytest with coverage
       run: |
-        # Add proper Chrome options
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--disable-dev-shm-usage')
         chrome_options.add_argument('--no-sandbox')
-        # Run pytest with coverage
         coverage run -m pytest
-        wait $!
+      wait-for:
+        - coverage run -m pytest
