@@ -11,7 +11,7 @@ def driver():
     driver = BasePage(
         driver=webdriver.Chrome(
             service=Service(executable_path=ChromeDriverManager(
-                url="https://sites.google.com/chromium.org/driver/downloads"
+                url="https://chromedriver.storage.googleapis.com/"
             ).install())
         ))
     # webdriver.Chrome(executable_path='/gender_app/test/chromedriver_mac_arm64/chromedriver'))
