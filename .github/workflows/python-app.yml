@@ -27,15 +27,13 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Install Chromium and ChromeDriver
       run: |
-        # Install Chromium
-        sudo apt-get update
-        sudo apt-get install -y chromium-browser
-        # Install ChromeDriver
-        wget https://chromedriver.storage.googleapis.com/94.0.4606.41/chromedriver_linux64.zip
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo dpkg -i google-chrome-stable_current_amd64.deb
+        sudo apt-get -y --no-install-recommends install ./google-chrome-stable_current_amd64.deb
+        wget https://chromedriver.storage.googleapis.com/VERSION_NUMBER/chromedriver_linux64.zip
         unzip chromedriver_linux64.zip
+        chmod +x chromedriver
         sudo mv chromedriver /usr/local/bin/
-        sudo chmod +x /usr/local/bin/chromedriver
-        ```
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
