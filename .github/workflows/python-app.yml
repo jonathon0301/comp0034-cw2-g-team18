@@ -38,7 +38,9 @@ jobs:
       run: pip install webdriver-manager
 
     - name: Run tests with coverage
-      run: coverage run -m pytest
+      run: |
+          pip install coverage
+          coverage run -m pytest
 
     - name: Generate coverage report
       run: coverage html
