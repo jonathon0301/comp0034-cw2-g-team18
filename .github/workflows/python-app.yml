@@ -46,9 +46,16 @@ jobs:
       run: sleep 5  # Wait for a few seconds for the app to start (if needed)
     - name: Run pytest with coverage
       run: |
+        python - <<EOF
+        from selenium import webdriver
+
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--disable-dev-shm-usage')
         chrome_options.add_argument('--no-sandbox')
-        coverage run -m pytest
+
+        # Replace this with your actual pytest command
+        pytest test_gender_app.py
+
+        EOF
     
