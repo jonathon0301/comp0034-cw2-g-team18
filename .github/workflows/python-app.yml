@@ -36,7 +36,14 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Run pytest with coverage
       run: |
-        python gender_app/app.py
+        python gender_app/app.py &  # Start the app.py in the background
+        sleep 5  # Wait for a few seconds for the app to start (if needed)
         pip install coverage
-        coverage run -m pytest
+        coverage run -m pytest  # Run pytest with coverage
+        timeout-minutes: 15  # Optionally, set a timeout for the pytest command to prevent it from running indefinitely
+
+    - name: Collect coverage data
+      run: |
+        coverage report -m  # Generate a coverage report
+        coverage xml -o coverage.xml  # Optionally, generate an XML report for further processing
 
