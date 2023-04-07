@@ -34,16 +34,10 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Start app.py
+      run: python gender_app/app.py &
+      background: true
+    - name: Wait for app.py to start
+      run: sleep 5
     - name: Run pytest with coverage
-      run: |
-        python gender_app/app.py &  # Start the app.py in the background
-        sleep 5  # Wait for a few seconds for the app to start (if needed)
-        pip install coverage
-        coverage run -m pytest  # Run pytest with coverage
-        timeout-minutes: 15  # Optionally, set a timeout for the pytest command to prevent it from running indefinitely
-
-    - name: Collect coverage data
-      run: |
-        coverage report -m  # Generate a coverage report
-        coverage xml -o coverage.xml  # Optionally, generate an XML report for further processing
-
+      run: coverage run -m pytest  # Run pytest with coverage
