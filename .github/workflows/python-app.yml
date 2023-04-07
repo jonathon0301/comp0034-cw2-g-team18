@@ -36,6 +36,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Run pytest with coverage
       run: |
+        python gender_app/app.py
         pip install coverage
         coverage run -m pytest
 
