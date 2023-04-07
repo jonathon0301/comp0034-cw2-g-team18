@@ -28,6 +28,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest coverage
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        # Install Chrome and ChromeDriver
+        # Update the package list
+        sudo apt-get update
+        # Install Chrome stable
+        sudo apt-get install -y google-chrome-stable
+        # Install Chromium ChromeDriver
+        sudo apt-get install -y chromium-chromedriver
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
@@ -40,5 +47,14 @@ jobs:
       run: sleep 5  # Wait for a few seconds for the app to start (if needed)
     - name: Run pytest with coverage
       run: |
+        # Add appropriate setup for Chrome and ChromeDriver
+        # Set the path to Chrome binary using CHROME_BIN environment variable
+        # Replace the placeholder with the path to Chrome binary in your CI environment
+        export CHROME_BIN=/path/to/chrome/binary
+        # Start ChromeDriver with appropriate options, such as headless mode
+        # Use the correct version of ChromeDriver that is compatible with the installed version of Chrome
+        # Use appropriate command for your CI environment to start ChromeDriver
+        # Replace the placeholder with the appropriate command to start ChromeDriver in your CI environment
+        chromedriver --headless &
         coverage run -m pytest  # Run pytest with coverage
         wait $!
