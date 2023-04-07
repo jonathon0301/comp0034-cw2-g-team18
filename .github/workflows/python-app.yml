@@ -35,8 +35,10 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Start app.py
-      run: python gender_app/app.py &  # Start the app.py in the background
+      run: python gender_app/app.py  # Start the app.py in the background
     - name: Wait for app.py to start
       run: sleep 5  # Wait for a few seconds for the app to start (if needed)
-    - name: Run test
-      run: python test/test_gender_app.py
+    - name: Run pytest with coverage
+      run: |
+        coverage run -m pytest  # Run pytest with coverage
+        wait $!
