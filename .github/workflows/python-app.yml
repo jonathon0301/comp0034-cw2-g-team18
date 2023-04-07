@@ -47,11 +47,17 @@ jobs:
     - name: Run pytest
       run: |
         python -c "from selenium import webdriver; \
+                   import pytest; \
                    chrome_options = webdriver.ChromeOptions(); \
                    chrome_options.add_argument('--headless'); \
                    chrome_options.add_argument('--disable-dev-shm-usage'); \
                    chrome_options.add_argument('--no-sandbox'); \
                    pytest.main(['test/test_gender_app.py'])"
+      shell: /usr/bin/bash -e {0}
+      env:
+        pythonLocation: /opt/hostedtoolcache/Python/3.10.10/x64
+        LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.10.10/x64/lib
+
 
 
     
