@@ -87,14 +87,17 @@ are also used to test the application.
 ### 2.1 Fixtures
 We have created two pytest fixtures in the [conftest.py](test/conftest.py).
 
-The first one is used to set the web driver to ChromeDriver downloaded as mentioned above so that the 
-driver configuration can be commonly used for every test in the testing file. Code for creating the fixture:
+The first one is used to set the web driver to ChromeDriver. Code for creating the fixture:
 ```ruby
 @pytest.fixture
 def driver():
     driver = BasePage(
-        driver=webdriver.Chrome(executable_path='/comp0034-cw2-g-team18/gender_app/test/chromedriver_mac_arm64'
-                                                '/chromedriver'))
+        driver=webdriver.Chrome(
+            service=Service(executable_path=ChromeDriverManager(
+                url="https://chromedriver.storage.googleapis.com"
+            ).install())
+        ))
+    # webdriver.Chrome(executable_path='/gender_app/test/chromedriver_mac_arm64/chromedriver'))
     yield driver
     driver.quit()
 ```
@@ -450,7 +453,10 @@ functionalities.
 
 Like what we did before, we have created a [workflow](.github/workflows/python-app.yml) on GitHub Actions 
 based on Python Application yml file provided on GitHub. However, the default settings reports errors all the time even 
-though dash app and tests went properly on IDE. Therefore, we have changed the settings with code from marketplace. The 
+though dash app and tests went properly on IDE. Therefore, we have changed some settings. The 
 screenshot for a successful result is shown below:
 ![](screenshots/CI.png)
 Dependency management and linting can also be shown in this CI workflow.
+
+Note that although the workflow shows successful result, the test in CI workflow actually contains error that we could 
+not figure out why. However, the pytest results ran in the terminal is alright anyway.
