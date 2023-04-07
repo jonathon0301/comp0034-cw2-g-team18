@@ -39,6 +39,7 @@ jobs:
         python gender_app/app.py &  # Start the app.py in the background
         sleep 5  # Wait for a few seconds for the app to start (if needed)
         pip install coverage
+        pip install webdriver-manager
         coverage run -m pytest  # Run pytest with coverage
         timeout-minutes: 15  # Optionally, set a timeout for the pytest command to prevent it from running indefinitely
 
